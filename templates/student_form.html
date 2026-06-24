@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Add/Edit Student - Student Management System{% endblock %}
+
+{% block content %}
+<div class="container-fluid px-4">
+    <h1 class="mt-4">Student Form</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+        <li class="breadcrumb-item"><a href="#">Students</a></li>
+        <li class="breadcrumb-item active">Add/Edit Student</li>
+    </ol>
+    
+    <div class="card mb-4">
+        <div class="card-header">
+            <i class="fas fa-user-graduate me-1"></i>
+            Student Information
+        </div>
+        <div class="card-body">
+            <form action="#" method="POST" enctype="multipart/form-data">
+                
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <div class="form-floating mb-3 mb-md-0">
+                            <input class="form-control" id="inputFirstName" type="text" placeholder="Enter first name" />
+                            <label for="inputFirstName">First name</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            <input class="form-control" id="inputLastName" type="text" placeholder="Enter last name" />
+                            <label for="inputLastName">Last name</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <div class="form-floating mb-3 mb-md-0">
+                            <input class="form-control" id="inputDOB" type="date" />
+                            <label for="inputDOB">Date of Birth</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating mb-3 mb-md-0">
+                            <select class="form-select" id="inputGender" aria-label="Gender">
+                                <option selected>Select Gender</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Other">Other</option>
+                            </select>
+                            <label for="inputGender">Gender</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <div class="form-floating mb-3 mb-md-0">
+                            <input class="form-control" id="inputClass" type="text" placeholder="Class/Grade" />
+                            <label for="inputClass">Class/Grade</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating mb-3 mb-md-0">
+                            <input class="form-control" id="inputAdmissionNo" type="text" placeholder="Admission Number" />
+                            <label for="inputAdmissionNo">Admission Number</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label for="inputPhoto" class="form-label">Profile Picture</label>
+                            <input class="form-control" type="file" id="inputPhoto">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating mb-3 mb-md-0">
+                            <input class="form-control" id="inputParentPhone" type="text" placeholder="Parent's Phone Number" />
+                            <label for="inputParentPhone">Parent's Phone Number</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="inputAddress" class="form-label">Address</label>
+                    <textarea class="form-control" id="inputAddress" rows="3" placeholder="Enter complete address"></textarea>
+                </div>
+                
+                <div class="mt-4 mb-0">
+                    <div class="d-grid"><button class="btn btn-primary btn-block" type="submit">Save Student</button></div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

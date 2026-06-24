@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Add/Edit Subject - Student Management System{% endblock %}
+
+{% block content %}
+<div class="container-fluid px-4">
+    <h1 class="mt-4">Subject Form</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a href="{% url 'index' %}">Dashboard</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'subject_list' %}">Subjects</a></li>
+        <li class="breadcrumb-item active">Add/Edit Subject</li>
+    </ol>
+    
+    <div class="card mb-4">
+        <div class="card-header">
+            <i class="fas fa-book-open me-1"></i>
+            Subject Details
+        </div>
+        <div class="card-body">
+            <form action="#" method="POST">
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <div class="form-floating mb-3 mb-md-0">
+                            <input class="form-control" id="inputSubjectName" type="text" placeholder="Subject Name" />
+                            <label for="inputSubjectName">Subject Name</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            <input class="form-control" id="inputSubjectCode" type="text" placeholder="Subject Code" />
+                            <label for="inputSubjectCode">Subject Code</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <div class="form-floating mb-3 mb-md-0">
+                            <select class="form-select" id="inputType" aria-label="Type">
+                                <option selected>Select Type</option>
+                                <option value="Theory">Theory</option>
+                                <option value="Practical">Practical</option>
+                                <option value="Both">Both</option>
+                            </select>
+                            <label for="inputType">Subject Type</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating mb-3 mb-md-0">
+                            <input class="form-control" id="inputGrade" type="text" placeholder="Class/Grade" />
+                            <label for="inputGrade">Class/Grade</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="inputDescription" class="form-label">Description</label>
+                    <textarea class="form-control" id="inputDescription" rows="3" placeholder="Enter subject description"></textarea>
+                </div>
+                
+                <div class="mt-4 mb-0">
+                    <div class="d-grid"><button class="btn btn-primary btn-block" type="submit">Save Subject</button></div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
