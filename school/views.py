@@ -1,46 +1,64 @@
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
+from .models import Student, Teacher, Department, Subject
 
-
+@login_required
 def index(request):
     return render(request, 'index.html')
 
+@login_required
 def dashboard(request):
     return render(request, 'dashboard.html')
 
+@login_required
 def teacher_dashboard(request):
     return render(request, 'teacher_dashboard.html')
 
+@login_required
 def student_dashboard(request):
     return render(request, 'student_dashboard.html')
 
+@login_required
 def teacher_list(request):
-    return render(request, 'teacher_list.html')
+    teachers = Teacher.objects.all()
+    return render(request, 'teacher_list.html', {'teachers': teachers})
 
+@login_required
 def teacher_form(request):
     return render(request, 'teacher_form.html')
 
+@login_required
 def teacher_detail(request):
     return render(request, 'teacher_detail.html')
 
+@login_required
 def student_list(request):
-    return render(request, 'student_list.html')
+    students = Student.objects.all()
+    return render(request, 'student_list.html', {'students': students})
 
+@login_required
 def student_form(request):
     return render(request, 'student_form.html')
 
+@login_required
 def student_detail(request):
     return render(request, 'student_detail.html')
 
+@login_required
 def department_list(request):
-    return render(request, 'department_list.html')
+    departments = Department.objects.all()
+    return render(request, 'department_list.html', {'departments': departments})
 
+@login_required
 def department_form(request):
     return render(request, 'department_form.html')
 
+@login_required
 def subject_list(request):
-    return render(request, 'subject_list.html')
+    subjects = Subject.objects.all()
+    return render(request, 'subject_list.html', {'subjects': subjects})
 
+@login_required
 def subject_form(request):
     return render(request, 'subject_form.html')
-    
