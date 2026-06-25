@@ -5,102 +5,221 @@
 
 {% block content %}
 <div class="container-fluid px-4">
-    <h1 class="mt-4">Admin Dashboard</h1>
-    <ol class="breadcrumb mb-4">
-        <li class="breadcrumb-item active">Dashboard Overview</li>
+    <style>
+        .dashboard-title {
+            font-weight: 800;
+            color: #1e293b;
+            letter-spacing: -0.5px;
+        }
+        .custom-breadcrumb {
+            background-color: #ffffff;
+            padding: 10px 16px;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            font-weight: 500;
+        }
+        /* Dashboard Cards Premium Styling */
+        .stat-card {
+            border: none;
+            border-radius: 14px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+        }
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.08) !important;
+        }
+        .card-grad-student { background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%); }
+        .card-grad-teacher { background: linear-gradient(135deg, #10b981 0%, #047857 100%); }
+        .card-grad-dept { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); }
+        .card-grad-fees { background: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%); }
+        
+        .stat-card .card-footer {
+            background: rgba(0, 0, 0, 0.1);
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            transition: background 0.2s ease;
+        }
+        .stat-card:hover .card-footer {
+            background: rgba(0, 0, 0, 0.18);
+        }
+        /* Chart Cards Style */
+        .chart-card {
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            background-color: #ffffff;
+        }
+        .chart-card .card-header {
+            background-color: #ffffff;
+            border-bottom: 1px solid #f1f5f9;
+            font-weight: 600;
+            color: #334155;
+            padding: 15px 20px;
+        }
+        .chart-card .card-body {
+            padding: 20px;
+        }
+    </style>
+
+    <h1 class="mt-4 dashboard-title">Admin Dashboard</h1>
+    <ol class="breadcrumb mb-4 custom-breadcrumb">
+        <li class="breadcrumb-item active text-muted"><i class="fas fa-home me-2"></i>Dashboard Overview</li>
     </ol>
     
     <div class="row">
-        <!-- Total Students Card -->
         <div class="col-xl-3 col-md-6">
-            <div class="card bg-primary text-white mb-4">
-                <div class="card-body d-flex justify-content-between align-items-center">
+            <div class="card stat-card card-grad-student text-white mb-4 shadow-sm">
+                <div class="card-body d-flex justify-content-between align-items-center p-4">
                     <div>
-                        <div class="small text-white-50">Total Students</div>
-                        <div class="fs-4 fw-bold">1,250</div>
+                        <div class="text-white-50 small text-uppercase fw-bold tracking-wider" style="font-size: 0.75rem;">Total Students</div>
+                        <div class="display-6 fw-bold my-1" style="font-size: 2rem;">1,250</div>
                     </div>
-                    <i class="fas fa-user-graduate fa-2x text-white-50"></i>
+                    <div class="bg-white bg-opacity-10 p-3 rounded-circle">
+                        <i class="fas fa-user-graduate fa-2x opacity-75"></i>
+                    </div>
                 </div>
-                <div class="card-footer d-flex align-items-center justify-content-between">
-                    <a class="small text-white stretched-link" href="{% url 'student_list' %}">View Details</a>
-                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                <div class="card-footer d-flex align-items-center justify-content-between py-3">
+                    <a class="small text-white text-decoration-none fw-medium stretched-link" href="{% url 'student_list' %}">View Details</a>
+                    <div class="small text-white"><i class="fas fa-chevron-right"></i></div>
                 </div>
             </div>
         </div>
         
-        <!-- Total Teachers Card -->
         <div class="col-xl-3 col-md-6">
-            <div class="card bg-success text-white mb-4">
-                <div class="card-body d-flex justify-content-between align-items-center">
+            <div class="card stat-card card-grad-teacher text-white mb-4 shadow-sm">
+                <div class="card-body d-flex justify-content-between align-items-center p-4">
                     <div>
-                        <div class="small text-white-50">Total Teachers</div>
-                        <div class="fs-4 fw-bold">85</div>
+                        <div class="text-white-50 small text-uppercase fw-bold tracking-wider" style="font-size: 0.75rem;">Total Teachers</div>
+                        <div class="display-6 fw-bold my-1" style="font-size: 2rem;">85</div>
                     </div>
-                    <i class="fas fa-chalkboard-teacher fa-2x text-white-50"></i>
+                    <div class="bg-white bg-opacity-10 p-3 rounded-circle">
+                        <i class="fas fa-chalkboard-teacher fa-2x opacity-75"></i>
+                    </div>
                 </div>
-                <div class="card-footer d-flex align-items-center justify-content-between">
-                    <a class="small text-white stretched-link" href="{% url 'teacher_list' %}">View Details</a>
-                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                <div class="card-footer d-flex align-items-center justify-content-between py-3">
+                    <a class="small text-white text-decoration-none fw-medium stretched-link" href="{% url 'teacher_list' %}">View Details</a>
+                    <div class="small text-white"><i class="fas fa-chevron-right"></i></div>
                 </div>
             </div>
         </div>
         
-        <!-- Total Departments Card -->
         <div class="col-xl-3 col-md-6">
-            <div class="card bg-warning text-white mb-4">
-                <div class="card-body d-flex justify-content-between align-items-center">
+            <div class="card stat-card card-grad-dept text-white mb-4 shadow-sm">
+                <div class="card-body d-flex justify-content-between align-items-center p-4">
                     <div>
-                        <div class="small text-white-50">Departments</div>
-                        <div class="fs-4 fw-bold">12</div>
+                        <div class="text-white-50 small text-uppercase fw-bold tracking-wider" style="font-size: 0.75rem;">Departments</div>
+                        <div class="display-6 fw-bold my-1" style="font-size: 2rem;">12</div>
                     </div>
-                    <i class="fas fa-building fa-2x text-white-50"></i>
+                    <div class="bg-white bg-opacity-10 p-3 rounded-circle">
+                        <i class="fas fa-building fa-2x opacity-75"></i>
+                    </div>
                 </div>
-                <div class="card-footer d-flex align-items-center justify-content-between">
-                    <a class="small text-white stretched-link" href="{% url 'department_list' %}">View Details</a>
-                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                <div class="card-footer d-flex align-items-center justify-content-between py-3">
+                    <a class="small text-white text-decoration-none fw-medium stretched-link" href="{% url 'department_list' %}">View Details</a>
+                    <div class="small text-white"><i class="fas fa-chevron-right"></i></div>
                 </div>
             </div>
         </div>
         
-        <!-- Revenue/Fees Card -->
         <div class="col-xl-3 col-md-6">
-            <div class="card bg-danger text-white mb-4">
-                <div class="card-body d-flex justify-content-between align-items-center">
+            <div class="card stat-card card-grad-fees text-white mb-4 shadow-sm">
+                <div class="card-body d-flex justify-content-between align-items-center p-4">
                     <div>
-                        <div class="small text-white-50">Pending Fees</div>
-                        <div class="fs-4 fw-bold">$12,400</div>
+                        <div class="text-white-50 small text-uppercase fw-bold tracking-wider" style="font-size: 0.75rem;">Pending Fees</div>
+                        <div class="display-6 fw-bold my-1" style="font-size: 2rem;">$12,400</div>
                     </div>
-                    <i class="fas fa-dollar-sign fa-2x text-white-50"></i>
+                    <div class="bg-white bg-opacity-10 p-3 rounded-circle">
+                        <i class="fas fa-dollar-sign fa-2x opacity-75"></i>
+                    </div>
                 </div>
-                <div class="card-footer d-flex align-items-center justify-content-between">
-                    <a class="small text-white stretched-link" href="#">View Details</a>
-                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                <div class="card-footer d-flex align-items-center justify-content-between py-3">
+                    <a class="small text-white text-decoration-none fw-medium stretched-link" href="#">View Details</a>
+                    <div class="small text-white"><i class="fas fa-chevron-right"></i></div>
                 </div>
             </div>
         </div>
     </div>
     
-    <div class="row">
-        <!-- Area Chart Example-->
+    <div class="row mt-2">
         <div class="col-xl-6">
-            <div class="card mb-4">
-                <div class="card-header">
-                    <i class="fas fa-chart-area me-1"></i>
-                    Student Attendance Overview
+            <div class="card chart-card mb-4">
+                <div class="card-header d-flex align-items-center">
+                    <i class="fas fa-chart-area me-2 text-primary"></i>
+                    Student Attendance Overview (Weekly %)
                 </div>
-                <div class="card-body"><canvas id="myAreaChart" width="100%" height="40"></canvas></div>
+                <div class="card-body">
+                    <canvas id="myAreaChart" width="100%" height="45"></canvas>
+                </div>
             </div>
         </div>
-        <!-- Bar Chart Example-->
         <div class="col-xl-6">
-            <div class="card mb-4">
-                <div class="card-header">
-                    <i class="fas fa-chart-bar me-1"></i>
-                    Monthly Revenue (Fees)
+            <div class="card chart-card mb-4">
+                <div class="card-header d-flex align-items-center">
+                    <i class="fas fa-chart-bar me-2 text-success"></i>
+                    Monthly Revenue (Fees in USD)
                 </div>
-                <div class="card-body"><canvas id="myBarChart" width="100%" height="40"></canvas></div>
+                <div class="card-body">
+                    <canvas id="myBarChart" width="100%" height="45"></canvas>
+                </div>
             </div>
         </div>
     </div>
 </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // 1. Student Attendance - Area Chart Data
+        var ctxArea = document.getElementById("myAreaChart").getContext("2d");
+        var myAreaChart = new Chart(ctxArea, {
+            type: 'line',
+            data: {
+                labels: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+                datasets: [{
+                    label: "Attendance Rate (%)",
+                    lineTension: 0.3,
+                    backgroundColor: "rgba(59, 130, 246, 0.1)",
+                    borderColor: "rgba(59, 130, 246, 1)",
+                    pointRadius: 4,
+                    pointBackgroundColor: "rgba(59, 130, 246, 1)",
+                    pointBorderColor: "#fff",
+                    pointHoverRadius: 6,
+                    pointHoverBackgroundColor: "rgba(13, 110, 253, 1)",
+                    pointHitRadius: 10,
+                    pointBorderWidth: 2,
+                    data: [92, 95, 88, 94, 91], // Mock data (%)
+                }],
+            },
+            options: {
+                scales: {
+                    xAxes: [{ gridLines: { display: false } }],
+                    yAxes: [{ ticks: { min: 0, max: 100, maxTicksLimit: 5 } }],
+                },
+                legend: { display: false }
+            }
+        });
+
+        // 2. Monthly Revenue - Bar Chart Data
+        var ctxBar = document.getElementById("myBarChart").getContext("2d");
+        var myBarChart = new Chart(ctxBar, {
+            type: 'bar',
+            data: {
+                labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+                datasets: [{
+                    label: "Revenue ($)",
+                    backgroundColor: "rgba(16, 185, 129, 0.85)",
+                    borderColor: "rgba(16, 185, 129, 1)",
+                    borderWidth: 1,
+                    data: [8500, 12400, 9800, 14200, 11000, 15000], // Mock data ($)
+                }],
+            },
+            options: {
+                scales: {
+                    xAxes: [{ gridLines: { display: false }, barPercentage: 0.5 }],
+                    yAxes: [{ ticks: { min: 0, maxTicksLimit: 6 } }],
+                },
+                legend: { display: false }
+            }
+        });
+    });
+</script>
 {% endblock %}

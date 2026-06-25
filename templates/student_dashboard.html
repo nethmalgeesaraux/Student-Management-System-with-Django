@@ -5,59 +5,211 @@
 
 {% block content %}
 <div class="container-fluid px-4">
-    <h1 class="mt-4">Student Dashboard</h1>
-    <ol class="breadcrumb mb-4">
-        <li class="breadcrumb-item active">Welcome to Student Portal</li>
+    <style>
+        .dashboard-title {
+            font-weight: 800;
+            color: #1e293b;
+            letter-spacing: -0.5px;
+        }
+        .custom-breadcrumb {
+            background-color: #ffffff;
+            padding: 10px 16px;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            font-weight: 500;
+        }
+        /* Cards Design */
+        .stat-card {
+            border: none;
+            border-radius: 14px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+        }
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.08) !important;
+        }
+        .card-grad-attendance { background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%); }
+        .card-grad-results { background: linear-gradient(135deg, #10b981 0%, #047857 100%); }
+        .card-grad-fees { background: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%); }
+        .card-grad-subjects { background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%); }
+        
+        .stat-card .card-footer {
+            background: rgba(0, 0, 0, 0.1);
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .stat-card:hover .card-footer {
+            background: rgba(0, 0, 0, 0.18);
+        }
+        /* Content Panel Styles */
+        .content-card {
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            background-color: #ffffff;
+        }
+        .content-card .card-header {
+            background-color: #ffffff;
+            border-bottom: 1px solid #f1f5f9;
+            font-weight: 600;
+            color: #334155;
+            padding: 15px 20px;
+        }
+    </style>
+
+    <h1 class="mt-4 dashboard-title">Student Dashboard</h1>
+    <ol class="breadcrumb mb-4 custom-breadcrumb">
+        <li class="breadcrumb-item active text-muted"><i class="fas fa-user-graduate me-2"></i>Welcome to Student Portal</li>
     </ol>
     
     <div class="row">
-        <!-- Attendance Card -->
         <div class="col-xl-3 col-md-6">
-            <div class="card bg-info text-white mb-4">
-                <div class="card-body d-flex justify-content-between align-items-center">
+            <div class="card stat-card card-grad-attendance text-white mb-4 shadow-sm">
+                <div class="card-body d-flex justify-content-between align-items-center p-4">
                     <div>
-                        <div class="small text-white-50">My Attendance</div>
-                        <div class="fs-4 fw-bold">95%</div>
+                        <div class="text-white-50 small text-uppercase fw-bold tracking-wider" style="font-size: 0.75rem;">My Attendance</div>
+                        <div class="display-6 fw-bold my-1" style="font-size: 2rem;">95%</div>
                     </div>
-                    <i class="fas fa-calendar-check fa-2x text-white-50"></i>
+                    <div class="bg-white bg-opacity-10 p-3 rounded-circle">
+                        <i class="fas fa-calendar-check fa-2x opacity-75"></i>
+                    </div>
                 </div>
-                <div class="card-footer d-flex align-items-center justify-content-between">
-                    <a class="small text-white stretched-link" href="#">View Details</a>
-                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                <div class="card-footer d-flex align-items-center justify-content-between py-3">
+                    <a class="small text-white text-decoration-none fw-medium stretched-link" href="#">View Details</a>
+                    <div class="small text-white"><i class="fas fa-chevron-right"></i></div>
                 </div>
             </div>
         </div>
         
-        <!-- Results Card -->
         <div class="col-xl-3 col-md-6">
-            <div class="card bg-success text-white mb-4">
-                <div class="card-body d-flex justify-content-between align-items-center">
+            <div class="card stat-card card-grad-results text-white mb-4 shadow-sm">
+                <div class="card-body d-flex justify-content-between align-items-center p-4">
                     <div>
-                        <div class="small text-white-50">Exam Results</div>
-                        <div class="fs-4 fw-bold">A+ Average</div>
+                        <div class="text-white-50 small text-uppercase fw-bold tracking-wider" style="font-size: 0.75rem;">Exam Results</div>
+                        <div class="display-6 fw-bold my-1" style="font-size: 2rem;">A+ Avg</div>
                     </div>
-                    <i class="fas fa-poll fa-2x text-white-50"></i>
+                    <div class="bg-white bg-opacity-10 p-3 rounded-circle">
+                        <i class="fas fa-poll fa-2x opacity-75"></i>
+                    </div>
                 </div>
-                <div class="card-footer d-flex align-items-center justify-content-between">
-                    <a class="small text-white stretched-link" href="#">View Results</a>
-                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                <div class="card-footer d-flex align-items-center justify-content-between py-3">
+                    <a class="small text-white text-decoration-none fw-medium stretched-link" href="#">View Results</a>
+                    <div class="small text-white"><i class="fas fa-chevron-right"></i></div>
                 </div>
             </div>
         </div>
         
-        <!-- Fees Card -->
         <div class="col-xl-3 col-md-6">
-            <div class="card bg-danger text-white mb-4">
-                <div class="card-body d-flex justify-content-between align-items-center">
+            <div class="card stat-card card-grad-fees text-white mb-4 shadow-sm">
+                <div class="card-body d-flex justify-content-between align-items-center p-4">
                     <div>
-                        <div class="small text-white-50">Pending Fees</div>
-                        <div class="fs-4 fw-bold">$0.00</div>
+                        <div class="text-white-50 small text-uppercase fw-bold tracking-wider" style="font-size: 0.75rem;">Pending Fees</div>
+                        <div class="display-6 fw-bold my-1" style="font-size: 2rem;">$0.00</div>
                     </div>
-                    <i class="fas fa-file-invoice-dollar fa-2x text-white-50"></i>
+                    <div class="bg-white bg-opacity-10 p-3 rounded-circle">
+                        <i class="fas fa-file-invoice-dollar fa-2x opacity-75"></i>
+                    </div>
                 </div>
-                <div class="card-footer d-flex align-items-center justify-content-between">
-                    <a class="small text-white stretched-link" href="#">Pay Fees</a>
-                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                <div class="card-footer d-flex align-items-center justify-content-between py-3">
+                    <a class="small text-white text-decoration-none fw-medium stretched-link" href="#">Pay Fees</a>
+                    <div class="small text-white"><i class="fas fa-chevron-right"></i></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6">
+            <div class="card stat-card card-grad-subjects text-white mb-4 shadow-sm">
+                <div class="card-body d-flex justify-content-between align-items-center p-4">
+                    <div>
+                        <div class="text-white-50 small text-uppercase fw-bold tracking-wider" style="font-size: 0.75rem;">My Subjects</div>
+                        <div class="display-6 fw-bold my-1" style="font-size: 2rem;">6</div>
+                    </div>
+                    <div class="bg-white bg-opacity-10 p-3 rounded-circle">
+                        <i class="fas fa-book fa-2x opacity-75"></i>
+                    </div>
+                </div>
+                <div class="card-footer d-flex align-items-center justify-content-between py-3">
+                    <a class="small text-white text-decoration-none fw-medium stretched-link" href="#">View Subjects</a>
+                    <div class="small text-white"><i class="fas fa-chevron-right"></i></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-2">
+        <div class="col-xl-8 col-lg-7">
+            <div class="card content-card mb-4">
+                <div class="card-header d-flex align-items-center">
+                    <i class="fas fa-tasks text-primary me-2"></i>
+                    Upcoming Assignments & Coursework
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="table-light text-secondary small text-uppercase">
+                                <tr>
+                                    <th>Assignment Title</th>
+                                    <th>Subject</th>
+                                    <th>Due Date</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="fw-medium">Calculus Problem Set 2</td>
+                                    <td>Mathematics</td>
+                                    <td>June 28, 2026</td>
+                                    <td><span class="badge bg-warning bg-opacity-10 text-warning px-3 py-2 rounded-pill">Pending</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-medium">Quantum Mechanics Essay</td>
+                                    <td>Physics</td>
+                                    <td>July 02, 2026</td>
+                                    <td><span class="badge bg-danger bg-opacity-10 text-danger px-3 py-2 rounded-pill">Urgent</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-medium">Database Normalization Lab</td>
+                                    <td>Computer Science</td>
+                                    <td>June 24, 2026</td>
+                                    <td><span class="badge bg-success bg-opacity-10 text-success px-3 py-2 rounded-pill">Submitted</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-4 col-lg-5">
+            <div class="card content-card mb-4">
+                <div class="card-header d-flex align-items-center">
+                    <i class="fas fa-calendar-day text-indigo me-2" style="color: #4f46e5;"></i>
+                    Today's Class Schedule
+                </div>
+                <div class="card-body px-3">
+                    <div class="list-group list-group-flush">
+                        <div class="list-group-item border-0 pb-3">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h6 class="mb-1 text-dark fw-bold">Pure Mathematics</h6>
+                                <small class="text-primary fw-semibold">08:30 AM</small>
+                            </div>
+                            <p class="mb-1 text-muted small">Room 402 - Prof. Silva</p>
+                        </div>
+                        <div class="list-group-item border-0 py-3 border-top">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h6 class="mb-1 text-dark fw-bold">Advanced Physics</h6>
+                                <small class="text-primary fw-semibold">11:00 AM</small>
+                            </div>
+                            <p class="mb-1 text-muted small">Lab 02 - Dr. Perera</p>
+                        </div>
+                        <div class="list-group-item border-0 py-3 border-top">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h6 class="mb-1 text-dark fw-bold">English Literature</h6>
+                                <small class="text-muted">01:30 PM</small>
+                            </div>
+                            <p class="mb-1 text-muted small">Main Hall - Mrs. Fernando</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

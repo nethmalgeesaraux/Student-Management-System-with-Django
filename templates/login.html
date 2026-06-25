@@ -8,34 +8,72 @@
         <title>Login - Student Management System</title>
         <link href="{% static 'css/styles.css' %}" rel="stylesheet" />
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+        <style>
+            /* UI එක තවත් ලස්සන කිරීමට අමතර CSS ස්වල්පයක් */
+            .bg-gradient-primary {
+                background: linear-gradient(135deg, #4e73df 0%, #224abe 100%);
+                min-height: 100vh;
+            }
+            .custom-card {
+                border: none;
+                border-radius: 15px !important;
+                background: rgba(255, 255, 255, 0.95);
+                backdrop-filter: blur(10px);
+            }
+            .btn-login {
+                background: linear-gradient(90deg, #4e73df 0%, #224abe 100%);
+                border: none;
+                padding: 12px;
+                border-radius: 8px;
+                font-weight: 600;
+                transition: all 0.3s ease;
+            }
+            .btn-login:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 5px 15px rgba(78, 115, 223, 0.4);
+            }
+            .form-control:focus {
+                border-color: #4e73df;
+                box-shadow: 0 0 0 0.25rem rgba(78, 115, 223, 0.25);
+            }
+        </style>
     </head>
-    <body class="bg-primary">
+    <body class="bg-gradient-primary">
         <div id="layoutAuthentication">
             <div id="layoutAuthentication_content">
                 <main>
                     <div class="container">
-                        <div class="row justify-content-center">
-                            <div class="col-lg-5">
-                                <div class="card shadow-lg border-0 rounded-lg mt-5">
-                                    <div class="card-header"><h3 class="text-center font-weight-light my-4">Login</h3></div>
-                                    <div class="card-body">
+                        <div class="row justify-content-center align-items-center style-row" style="min-height: 80vh;">
+                            <div class="col-lg-5 col-md-7">
+                                <div class="card custom-card shadow-2xl mt-5">
+                                    <div class="card-header bg-transparent border-0 pt-5 pb-2">
+                                        <div class="text-center">
+                                            <div class="mb-3">
+                                                <i class="fas fa-user-graduation text-primary fa-3x"></i>
+                                            </div>
+                                            <h3 class="font-weight-bold text-dark m-0" style="font-weight: 700;">Welcome Back</h3>
+                                            <p class="text-muted small mt-2">Student Management System</p>
+                                        </div>
+                                    </div>
+                                    <div class="card-body px-4 pb-5">
                                         <form method="post">
                                             {% csrf_token %}
                                             <div class="form-floating mb-3">
                                                 <input class="form-control" id="inputUsername" name="username" type="text" placeholder="Enter username" required />
-                                                <label for="inputUsername">Username</label>
+                                                <label for="inputUsername"><i class="fas fa-user me-2 text-muted"></i>Username</label>
                                             </div>
-                                            <div class="form-floating mb-3">
+                                            <div class="form-floating mb-4">
                                                 <input class="form-control" id="inputPassword" name="password" type="password" placeholder="Password" required />
-                                                <label for="inputPassword">Password</label>
+                                                <label for="inputPassword"><i class="fas fa-lock me-2 text-muted"></i>Password</label>
                                             </div>
                                             {% if form.errors %}
-                                                <div class="alert alert-danger">
-                                                    Your username and password didn't match. Please try again.
+                                                <div class="alert alert-danger d-flex align-items-center small py-2" role="alert">
+                                                    <i class="fas fa-exclamation-triangle me-2"></i>
+                                                    <div>Your username and password didn't match.</div>
                                                 </div>
                                             {% endif %}
-                                            <div class="d-flex align-items-center justify-content-between mt-4 mb-0">
-                                                <button class="btn btn-primary" type="submit">Login</button>
+                                            <div class="d-grid mt-4">
+                                                <button class="btn btn-primary btn-login text-white" type="submit">Login to Account</button>
                                             </div>
                                         </form>
                                     </div>
@@ -46,10 +84,10 @@
                 </main>
             </div>
             <div id="layoutAuthentication_footer">
-                <footer class="py-4 bg-light mt-auto">
+                <footer class="py-4 mt-auto bg-transparent">
                     <div class="container-fluid px-4">
-                        <div class="d-flex align-items-center justify-content-between small">
-                            <div class="text-muted">Copyright &copy; Student Management System 2024</div>
+                        <div class="d-flex align-items-center justify-content-center small">
+                            <div class="text-white-50">Copyright &copy; Student Management System 2026</div>
                         </div>
                     </div>
                 </footer>
