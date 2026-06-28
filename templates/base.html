@@ -1,4 +1,5 @@
 {% load static %}
+{% load school_tags %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -112,7 +113,7 @@
                     <li>
                         <hr class="dropdown-divider" />
                     </li>
-                    <li><a class="dropdown-item py-2 text-danger" href="#!"><i
+                    <li><a class="dropdown-item py-2 text-danger" href="{% url 'logout' %}"><i
                                 class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
                 </ul>
             </li>
@@ -125,6 +126,7 @@
                     <div class="nav">
                         <div class="sb-sidenav-menu-heading">Main Menu</div>
 
+                        {% if request.user.is_superuser %}
                         <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
                             data-bs-target="#collapseDashboard" aria-expanded="false" aria-controls="collapseDashboard">
                             <div class="sb-nav-link-icon"><i class="fas fa-th-large"></i></div>
@@ -196,12 +198,53 @@
                                 <a class="nav-link" href="{% url 'subject_add' %}">Add Subject</a>
                             </nav>
                         </div>
+                        {% elif request.user|is_teacher %}
+                        <a class="nav-link" href="{% url 'teacher_dashboard' %}">
+                            <div class="sb-nav-link-icon"><i class="fas fa-th-large"></i></div>
+                            Dashboard
+                        </a>
+                        <a class="nav-link" href="{% url 'student_list' %}">
+                            <div class="sb-nav-link-icon"><i class="fas fa-user-graduate"></i></div>
+                            My Students
+                        </a>
+                        <a class="nav-link" href="{% url 'subject_list' %}">
+                            <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
+                            Subjects
+                        </a>
+                        <a class="nav-link" href="{% url 'department_list' %}">
+                            <div class="sb-nav-link-icon"><i class="fas fa-building"></i></div>
+                            Departments
+                        </a>
+
+                        {% elif request.user|is_student %}
+                        <a class="nav-link" href="{% url 'student_dashboard' %}">
+                            <div class="sb-nav-link-icon"><i class="fas fa-th-large"></i></div>
+                            Dashboard
+                        </a>
+                        <a class="nav-link" href="{% url 'subject_list' %}">
+                            <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
+                            My Subjects
+                        </a>
+                        <a class="nav-link" href="{% url 'department_list' %}">
+                            <div class="sb-nav-link-icon"><i class="fas fa-building"></i></div>
+                            Departments
+                        </a>
+                        <a class="nav-link" href="{% url 'teacher_list' %}">
+                            <div class="sb-nav-link-icon"><i class="fas fa-chalkboard-teacher"></i></div>
+                            Teachers
+                        </a>
+                        {% endif %}
                     </div>
                 </div>
                 <div class="sb-sidenav-footer d-flex align-items-center justify-content-between py-3 px-3">
                     <div>
                         <div class="small text-muted">Logged in as:</div>
-                        <span class="fw-semibold text-light">Admin</span>
+                        <span class="fw-semibold text-light">
+                            {% if request.user.is_superuser %}Admin
+                            {% elif request.user|is_teacher %}Teacher ({{ request.user.username }})
+                            {% elif request.user|is_student %}Student ({{ request.user.username }})
+                            {% else %}{{ request.user.username }}{% endif %}
+                        </span>
                     </div>
                     <i class="fas fa-circle text-success" style="font-size: 0.65rem;"></i>
                 </div>

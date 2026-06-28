@@ -1,10 +1,13 @@
-from django.http import HttpResponse
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from .models import Student, Teacher, Department, Subject
 
 @login_required
 def index(request):
+    if hasattr(request.user, 'teacher'):
+        return redirect('teacher_dashboard')
+    elif hasattr(request.user, 'student'):
+        return redirect('student_dashboard')
     return render(request, 'index.html')
 
 @login_required
