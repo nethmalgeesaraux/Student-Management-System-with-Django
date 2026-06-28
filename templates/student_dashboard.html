@@ -67,15 +67,15 @@
             <div class="card stat-card card-grad-attendance text-white mb-4 shadow-sm">
                 <div class="card-body d-flex justify-content-between align-items-center p-4">
                     <div>
-                        <div class="text-white-50 small text-uppercase fw-bold tracking-wider" style="font-size: 0.75rem;">My Attendance</div>
-                        <div class="display-6 fw-bold my-1" style="font-size: 2rem;">95%</div>
+                        <div class="text-white-50 small text-uppercase fw-bold tracking-wider" style="font-size: 0.75rem;">Total Subjects</div>
+                        <div class="display-6 fw-bold my-1" id="dashTotalSubjects" style="font-size: 2rem;">...</div>
                     </div>
                     <div class="bg-white bg-opacity-10 p-3 rounded-circle">
-                        <i class="fas fa-calendar-check fa-2x opacity-75"></i>
+                        <i class="fas fa-book-open fa-2x opacity-75"></i>
                     </div>
                 </div>
                 <div class="card-footer d-flex align-items-center justify-content-between py-3">
-                    <a class="small text-white text-decoration-none fw-medium stretched-link" href="#">View Details</a>
+                    <a class="small text-white text-decoration-none fw-medium stretched-link" href="{% url 'subject_list' %}">View Subjects</a>
                     <div class="small text-white"><i class="fas fa-chevron-right"></i></div>
                 </div>
             </div>
@@ -85,15 +85,15 @@
             <div class="card stat-card card-grad-results text-white mb-4 shadow-sm">
                 <div class="card-body d-flex justify-content-between align-items-center p-4">
                     <div>
-                        <div class="text-white-50 small text-uppercase fw-bold tracking-wider" style="font-size: 0.75rem;">Exam Results</div>
-                        <div class="display-6 fw-bold my-1" style="font-size: 2rem;">A+ Avg</div>
+                        <div class="text-white-50 small text-uppercase fw-bold tracking-wider" style="font-size: 0.75rem;">Total Teachers</div>
+                        <div class="display-6 fw-bold my-1" id="dashTotalTeachers" style="font-size: 2rem;">...</div>
                     </div>
                     <div class="bg-white bg-opacity-10 p-3 rounded-circle">
-                        <i class="fas fa-poll fa-2x opacity-75"></i>
+                        <i class="fas fa-chalkboard-teacher fa-2x opacity-75"></i>
                     </div>
                 </div>
                 <div class="card-footer d-flex align-items-center justify-content-between py-3">
-                    <a class="small text-white text-decoration-none fw-medium stretched-link" href="#">View Results</a>
+                    <a class="small text-white text-decoration-none fw-medium stretched-link" href="{% url 'teacher_list' %}">View Teachers</a>
                     <div class="small text-white"><i class="fas fa-chevron-right"></i></div>
                 </div>
             </div>
@@ -103,15 +103,15 @@
             <div class="card stat-card card-grad-fees text-white mb-4 shadow-sm">
                 <div class="card-body d-flex justify-content-between align-items-center p-4">
                     <div>
-                        <div class="text-white-50 small text-uppercase fw-bold tracking-wider" style="font-size: 0.75rem;">Pending Fees</div>
-                        <div class="display-6 fw-bold my-1" style="font-size: 2rem;">$0.00</div>
+                        <div class="text-white-50 small text-uppercase fw-bold tracking-wider" style="font-size: 0.75rem;">Total Departments</div>
+                        <div class="display-6 fw-bold my-1" id="dashTotalDepartments" style="font-size: 2rem;">...</div>
                     </div>
                     <div class="bg-white bg-opacity-10 p-3 rounded-circle">
-                        <i class="fas fa-file-invoice-dollar fa-2x opacity-75"></i>
+                        <i class="fas fa-building fa-2x opacity-75"></i>
                     </div>
                 </div>
                 <div class="card-footer d-flex align-items-center justify-content-between py-3">
-                    <a class="small text-white text-decoration-none fw-medium stretched-link" href="#">Pay Fees</a>
+                    <a class="small text-white text-decoration-none fw-medium stretched-link" href="{% url 'department_list' %}">View Departments</a>
                     <div class="small text-white"><i class="fas fa-chevron-right"></i></div>
                 </div>
             </div>
@@ -121,15 +121,15 @@
             <div class="card stat-card card-grad-subjects text-white mb-4 shadow-sm">
                 <div class="card-body d-flex justify-content-between align-items-center p-4">
                     <div>
-                        <div class="text-white-50 small text-uppercase fw-bold tracking-wider" style="font-size: 0.75rem;">My Subjects</div>
-                        <div class="display-6 fw-bold my-1" style="font-size: 2rem;">6</div>
+                        <div class="text-white-50 small text-uppercase fw-bold tracking-wider" style="font-size: 0.75rem;">Total Students</div>
+                        <div class="display-6 fw-bold my-1" id="dashTotalStudents" style="font-size: 2rem;">...</div>
                     </div>
                     <div class="bg-white bg-opacity-10 p-3 rounded-circle">
-                        <i class="fas fa-book fa-2x opacity-75"></i>
+                        <i class="fas fa-user-graduate fa-2x opacity-75"></i>
                     </div>
                 </div>
                 <div class="card-footer d-flex align-items-center justify-content-between py-3">
-                    <a class="small text-white text-decoration-none fw-medium stretched-link" href="#">View Subjects</a>
+                    <a class="small text-white text-decoration-none fw-medium stretched-link" href="{% url 'student_list' %}">View Students</a>
                     <div class="small text-white"><i class="fas fa-chevron-right"></i></div>
                 </div>
             </div>
@@ -215,4 +215,26 @@
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener("DOMContentLoaded", async function() {
+        try {
+            const [subjects, teachers, departments, students] = await Promise.all([
+                apiFetch('/api/subjects/'),
+                apiFetch('/api/teachers/'),
+                apiFetch('/api/departments/'),
+                apiFetch('/api/students/')
+            ]);
+            
+            document.getElementById('dashTotalSubjects').innerText = subjects.length;
+            document.getElementById('dashTotalTeachers').innerText = teachers.length;
+            document.getElementById('dashTotalDepartments').innerText = departments.length;
+            document.getElementById('dashTotalStudents').innerText = students.length;
+        } catch (error) {
+            console.error('Failed to load dashboard stats', error);
+        }
+    });
+</script>
 {% endblock %}

@@ -72,7 +72,7 @@
                 <div class="card-body d-flex justify-content-between align-items-center p-4">
                     <div>
                         <div class="text-white-50 small text-uppercase fw-bold tracking-wider" style="font-size: 0.75rem;">Total Students</div>
-                        <div class="display-6 fw-bold my-1" style="font-size: 2rem;">1,250</div>
+                        <div class="display-6 fw-bold my-1" id="dashTotalStudents" style="font-size: 2rem;">...</div>
                     </div>
                     <div class="bg-white bg-opacity-10 p-3 rounded-circle">
                         <i class="fas fa-user-graduate fa-2x opacity-75"></i>
@@ -90,7 +90,7 @@
                 <div class="card-body d-flex justify-content-between align-items-center p-4">
                     <div>
                         <div class="text-white-50 small text-uppercase fw-bold tracking-wider" style="font-size: 0.75rem;">Total Teachers</div>
-                        <div class="display-6 fw-bold my-1" style="font-size: 2rem;">85</div>
+                        <div class="display-6 fw-bold my-1" id="dashTotalTeachers" style="font-size: 2rem;">...</div>
                     </div>
                     <div class="bg-white bg-opacity-10 p-3 rounded-circle">
                         <i class="fas fa-chalkboard-teacher fa-2x opacity-75"></i>
@@ -108,7 +108,7 @@
                 <div class="card-body d-flex justify-content-between align-items-center p-4">
                     <div>
                         <div class="text-white-50 small text-uppercase fw-bold tracking-wider" style="font-size: 0.75rem;">Departments</div>
-                        <div class="display-6 fw-bold my-1" style="font-size: 2rem;">12</div>
+                        <div class="display-6 fw-bold my-1" id="dashTotalDepartments" style="font-size: 2rem;">...</div>
                     </div>
                     <div class="bg-white bg-opacity-10 p-3 rounded-circle">
                         <i class="fas fa-building fa-2x opacity-75"></i>
@@ -125,15 +125,15 @@
             <div class="card stat-card card-grad-fees text-white mb-4 shadow-sm">
                 <div class="card-body d-flex justify-content-between align-items-center p-4">
                     <div>
-                        <div class="text-white-50 small text-uppercase fw-bold tracking-wider" style="font-size: 0.75rem;">Pending Fees</div>
-                        <div class="display-6 fw-bold my-1" style="font-size: 2rem;">$12,400</div>
+                        <div class="text-white-50 small text-uppercase fw-bold tracking-wider" style="font-size: 0.75rem;">Subjects</div>
+                        <div class="display-6 fw-bold my-1" id="dashTotalSubjects" style="font-size: 2rem;">...</div>
                     </div>
                     <div class="bg-white bg-opacity-10 p-3 rounded-circle">
-                        <i class="fas fa-dollar-sign fa-2x opacity-75"></i>
+                        <i class="fas fa-book-open fa-2x opacity-75"></i>
                     </div>
                 </div>
                 <div class="card-footer d-flex align-items-center justify-content-between py-3">
-                    <a class="small text-white text-decoration-none fw-medium stretched-link" href="#">View Details</a>
+                    <a class="small text-white text-decoration-none fw-medium stretched-link" href="{% url 'subject_list' %}">View Details</a>
                     <div class="small text-white"><i class="fas fa-chevron-right"></i></div>
                 </div>
             </div>
@@ -167,7 +167,24 @@
 </div>
 
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
+    document.addEventListener("DOMContentLoaded", async function() {
+        // Fetch stats
+        try {
+            const [students, teachers, departments, subjects] = await Promise.all([
+                apiFetch('/api/students/'),
+                apiFetch('/api/teachers/'),
+                apiFetch('/api/departments/'),
+                apiFetch('/api/subjects/')
+            ]);
+            
+            document.getElementById('dashTotalStudents').innerText = students.length;
+            document.getElementById('dashTotalTeachers').innerText = teachers.length;
+            document.getElementById('dashTotalDepartments').innerText = departments.length;
+            document.getElementById('dashTotalSubjects').innerText = subjects.length;
+        } catch (error) {
+            console.error('Failed to load dashboard stats', error);
+        }
+
         // 1. Student Attendance - Area Chart Data
         var ctxArea = document.getElementById("myAreaChart").getContext("2d");
         var myAreaChart = new Chart(ctxArea, {
