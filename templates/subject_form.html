@@ -5,11 +5,11 @@
 
 {% block content %}
 <div class="container-fluid px-4">
-    <h1 class="mt-4">Subject Form</h1>
+    <h1 class="mt-4" id="pageTitle">Add Subject</h1>
     <ol class="breadcrumb mb-4">
         <li class="breadcrumb-item"><a href="{% url 'index' %}">Dashboard</a></li>
         <li class="breadcrumb-item"><a href="{% url 'subject_list' %}">Subjects</a></li>
-        <li class="breadcrumb-item active">Add/Edit Subject</li>
+        <li class="breadcrumb-item active" id="breadcrumbActive">Add Subject</li>
     </ol>
     
     <div class="card mb-4">
@@ -18,52 +18,111 @@
             Subject Details
         </div>
         <div class="card-body">
-            <form action="#" method="POST">
+            <form id="subjectForm">
                 <div class="row mb-3">
                     <div class="col-md-6">
                         <div class="form-floating mb-3 mb-md-0">
-                            <input class="form-control" id="inputSubjectName" type="text" placeholder="Subject Name" />
+                            <input class="form-control" id="inputSubjectName" type="text" placeholder="Subject Name" required />
                             <label for="inputSubjectName">Subject Name</label>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-floating">
-                            <input class="form-control" id="inputSubjectCode" type="text" placeholder="Subject Code" />
+                            <input class="form-control" id="inputSubjectCode" type="text" placeholder="Subject Code" required />
                             <label for="inputSubjectCode">Subject Code</label>
                         </div>
                     </div>
                 </div>
                 
                 <div class="row mb-3">
-                    <div class="col-md-6">
+                    <div class="col-md-12">
                         <div class="form-floating mb-3 mb-md-0">
-                            <select class="form-select" id="inputType" aria-label="Type">
-                                <option selected>Select Type</option>
-                                <option value="Theory">Theory</option>
-                                <option value="Practical">Practical</option>
-                                <option value="Both">Both</option>
+                            <select class="form-select" id="inputDepartment" aria-label="Department" required>
+                                <option value="" selected>Select Department</option>
                             </select>
-                            <label for="inputType">Subject Type</label>
+                            <label for="inputDepartment">Department</label>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <div class="form-floating mb-3 mb-md-0">
-                            <input class="form-control" id="inputGrade" type="text" placeholder="Class/Grade" />
-                            <label for="inputGrade">Class/Grade</label>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="mb-3">
-                    <label for="inputDescription" class="form-label">Description</label>
-                    <textarea class="form-control" id="inputDescription" rows="3" placeholder="Enter subject description"></textarea>
                 </div>
                 
                 <div class="mt-4 mb-0">
-                    <div class="d-grid"><button class="btn btn-primary btn-block" type="submit">Save Subject</button></div>
+                    <div class="d-grid"><button class="btn btn-primary btn-block" type="submit" id="submitBtn">Save Subject</button></div>
                 </div>
             </form>
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    const subjectId = getUrlParam('id');
+    const form = document.getElementById('subjectForm');
+
+    document.addEventListener('DOMContentLoaded', async () => {
+        await loadDepartments();
+        
+        if (subjectId) {
+            document.getElementById('pageTitle').textContent = 'Edit Subject';
+            document.getElementById('breadcrumbActive').textContent = 'Edit Subject';
+            document.getElementById('submitBtn').textContent = 'Update Subject';
+            await loadSubjectData();
+        }
+    });
+
+    async function loadDepartments() {
+        try {
+            const departments = await apiFetch('/api/departments/');
+            const select = document.getElementById('inputDepartment');
+            departments.forEach(dept => {
+                const option = document.createElement('option');
+                option.value = dept.id;
+                option.textContent = dept.name;
+                select.appendChild(option);
+            });
+        } catch (error) {
+            console.error('Failed to load departments', error);
+        }
+    }
+
+    async function loadSubjectData() {
+        try {
+            const subject = await apiFetch(`/api/subjects/${subjectId}/`);
+            document.getElementById('inputSubjectName').value = subject.name;
+            document.getElementById('inputSubjectCode').value = subject.code;
+            document.getElementById('inputDepartment').value = subject.department;
+        } catch (error) {
+            alert('Failed to load subject data');
+            console.error(error);
+        }
+    }
+
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const data = {
+            name: document.getElementById('inputSubjectName').value,
+            code: document.getElementById('inputSubjectCode').value,
+            department: document.getElementById('inputDepartment').value
+        };
+
+        try {
+            if (subjectId) {
+                await apiFetch(`/api/subjects/${subjectId}/`, {
+                    method: 'PUT',
+                    body: JSON.stringify(data)
+                });
+            } else {
+                await apiFetch('/api/subjects/', {
+                    method: 'POST',
+                    body: JSON.stringify(data)
+                });
+            }
+            window.location.href = "{% url 'subject_list' %}";
+        } catch (error) {
+            alert('Failed to save subject. ' + error.message);
+            console.error(error);
+        }
+    });
+</script>
 {% endblock %}

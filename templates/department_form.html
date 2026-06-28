@@ -5,11 +5,11 @@
 
 {% block content %}
 <div class="container-fluid px-4">
-    <h1 class="mt-4">Department Form</h1>
+    <h1 class="mt-4" id="pageTitle">Add Department</h1>
     <ol class="breadcrumb mb-4">
         <li class="breadcrumb-item"><a href="{% url 'index' %}">Dashboard</a></li>
         <li class="breadcrumb-item"><a href="{% url 'department_list' %}">Departments</a></li>
-        <li class="breadcrumb-item active">Add/Edit Department</li>
+        <li class="breadcrumb-item active" id="breadcrumbActive">Add Department</li>
     </ol>
     
     <div class="card mb-4">
@@ -18,41 +18,80 @@
             Department Details
         </div>
         <div class="card-body">
-            <form action="#" method="POST">
+            <form id="departmentForm">
                 <div class="row mb-3">
-                    <div class="col-md-6">
-                        <div class="form-floating mb-3 mb-md-0">
-                            <input class="form-control" id="inputDeptName" type="text" placeholder="Department Name" />
+                    <div class="col-md-12">
+                        <div class="form-floating mb-3">
+                            <input class="form-control" id="inputDeptName" type="text" placeholder="Department Name" required />
                             <label for="inputDeptName">Department Name</label>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-floating">
-                            <input class="form-control" id="inputHOD" type="text" placeholder="Head of Department" />
-                            <label for="inputHOD">Head of Department</label>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <div class="form-floating mb-3 mb-md-0">
-                            <input class="form-control" id="inputStartYear" type="number" placeholder="Started Year" />
-                            <label for="inputStartYear">Started Year</label>
                         </div>
                     </div>
                 </div>
                 
                 <div class="mb-3">
                     <label for="inputDescription" class="form-label">Description</label>
-                    <textarea class="form-control" id="inputDescription" rows="3" placeholder="Enter department description"></textarea>
+                    <textarea class="form-control" id="inputDescription" rows="4" placeholder="Enter department description"></textarea>
                 </div>
                 
                 <div class="mt-4 mb-0">
-                    <div class="d-grid"><button class="btn btn-primary btn-block" type="submit">Save Department</button></div>
+                    <div class="d-grid"><button class="btn btn-primary btn-block" type="submit" id="submitBtn">Save Department</button></div>
                 </div>
             </form>
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    const deptId = getUrlParam('id');
+    const form = document.getElementById('departmentForm');
+
+    document.addEventListener('DOMContentLoaded', async () => {
+        if (deptId) {
+            document.getElementById('pageTitle').textContent = 'Edit Department';
+            document.getElementById('breadcrumbActive').textContent = 'Edit Department';
+            document.getElementById('submitBtn').textContent = 'Update Department';
+            await loadDepartmentData();
+        }
+    });
+
+    async function loadDepartmentData() {
+        try {
+            const dept = await apiFetch(`/api/departments/${deptId}/`);
+            document.getElementById('inputDeptName').value = dept.name;
+            document.getElementById('inputDescription').value = dept.description || '';
+        } catch (error) {
+            alert('Failed to load department data');
+            console.error(error);
+        }
+    }
+
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const data = {
+            name: document.getElementById('inputDeptName').value,
+            description: document.getElementById('inputDescription').value
+        };
+
+        try {
+            if (deptId) {
+                await apiFetch(`/api/departments/${deptId}/`, {
+                    method: 'PUT',
+                    body: JSON.stringify(data)
+                });
+            } else {
+                await apiFetch('/api/departments/', {
+                    method: 'POST',
+                    body: JSON.stringify(data)
+                });
+            }
+            window.location.href = "{% url 'department_list' %}";
+        } catch (error) {
+            alert('Failed to save department. ' + error.message);
+            console.error(error);
+        }
+    });
+</script>
 {% endblock %}

@@ -5,11 +5,11 @@
 
 {% block content %}
 <div class="container-fluid px-4">
-    <h1 class="mt-4">Student Form</h1>
+    <h1 class="mt-4" id="pageTitle">Add Student</h1>
     <ol class="breadcrumb mb-4">
-        <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
-        <li class="breadcrumb-item"><a href="#">Students</a></li>
-        <li class="breadcrumb-item active">Add/Edit Student</li>
+        <li class="breadcrumb-item"><a href="{% url 'index' %}">Dashboard</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'student_list' %}">Students</a></li>
+        <li class="breadcrumb-item active" id="breadcrumbActive">Add Student</li>
     </ol>
     
     <div class="card mb-4">
@@ -18,39 +18,19 @@
             Student Information
         </div>
         <div class="card-body">
-            <form action="#" method="POST" enctype="multipart/form-data">
-                
+            <form id="studentForm">
+                <h5 class="mb-3">Account Details</h5>
                 <div class="row mb-3">
                     <div class="col-md-6">
                         <div class="form-floating mb-3 mb-md-0">
-                            <input class="form-control" id="inputFirstName" type="text" placeholder="Enter first name" />
-                            <label for="inputFirstName">First name</label>
+                            <input class="form-control" id="inputUsername" type="text" placeholder="Username" required />
+                            <label for="inputUsername">Username</label>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-floating">
-                            <input class="form-control" id="inputLastName" type="text" placeholder="Enter last name" />
-                            <label for="inputLastName">Last name</label>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <div class="form-floating mb-3 mb-md-0">
-                            <input class="form-control" id="inputDOB" type="date" />
-                            <label for="inputDOB">Date of Birth</label>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-floating mb-3 mb-md-0">
-                            <select class="form-select" id="inputGender" aria-label="Gender">
-                                <option selected>Select Gender</option>
-                                <option value="Male">Male</option>
-                                <option value="Female">Female</option>
-                                <option value="Other">Other</option>
-                            </select>
-                            <label for="inputGender">Gender</label>
+                            <input class="form-control" id="inputPassword" type="password" placeholder="Password" />
+                            <label for="inputPassword">Password (leave blank to keep unchanged on edit)</label>
                         </div>
                     </div>
                 </div>
@@ -58,29 +38,52 @@
                 <div class="row mb-3">
                     <div class="col-md-6">
                         <div class="form-floating mb-3 mb-md-0">
-                            <input class="form-control" id="inputClass" type="text" placeholder="Class/Grade" />
-                            <label for="inputClass">Class/Grade</label>
+                            <input class="form-control" id="inputFirstName" type="text" placeholder="First Name" required />
+                            <label for="inputFirstName">First Name</label>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-floating mb-3 mb-md-0">
-                            <input class="form-control" id="inputAdmissionNo" type="text" placeholder="Admission Number" />
-                            <label for="inputAdmissionNo">Admission Number</label>
+                            <input class="form-control" id="inputLastName" type="text" placeholder="Last Name" required />
+                            <label for="inputLastName">Last Name</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row mb-3">
+                    <div class="col-md-12">
+                        <div class="form-floating mb-3 mb-md-0">
+                            <input class="form-control" id="inputEmail" type="email" placeholder="Email" required />
+                            <label for="inputEmail">Email Address</label>
+                        </div>
+                    </div>
+                </div>
+
+                <hr class="mt-4 mb-4" />
+                <h5 class="mb-3">Student Details</h5>
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <div class="form-floating mb-3 mb-md-0">
+                            <input class="form-control" id="inputAdmissionNo" type="text" placeholder="Admission Number" required />
+                            <label for="inputAdmissionNo">Admission Number (Roll No)</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating mb-3 mb-md-0">
+                            <select class="form-select" id="inputDepartment" aria-label="Department" required>
+                                <option value="" selected>Select Department</option>
+                            </select>
+                            <label for="inputDepartment">Department</label>
                         </div>
                     </div>
                 </div>
                 
                 <div class="row mb-3">
                     <div class="col-md-6">
-                        <div class="mb-3">
-                            <label for="inputPhoto" class="form-label">Profile Picture</label>
-                            <input class="form-control" type="file" id="inputPhoto">
-                        </div>
-                    </div>
-                    <div class="col-md-6">
                         <div class="form-floating mb-3 mb-md-0">
-                            <input class="form-control" id="inputParentPhone" type="text" placeholder="Parent's Phone Number" />
-                            <label for="inputParentPhone">Parent's Phone Number</label>
+                            <input class="form-control" id="inputPhone" type="text" placeholder="Phone Number" />
+                            <label for="inputPhone">Phone Number</label>
                         </div>
                     </div>
                 </div>
@@ -91,10 +94,104 @@
                 </div>
                 
                 <div class="mt-4 mb-0">
-                    <div class="d-grid"><button class="btn btn-primary btn-block" type="submit">Save Student</button></div>
+                    <div class="d-grid"><button class="btn btn-primary btn-block" type="submit" id="submitBtn">Save Student</button></div>
                 </div>
             </form>
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    const studentId = getUrlParam('id');
+    const form = document.getElementById('studentForm');
+
+    document.addEventListener('DOMContentLoaded', async () => {
+        await loadDepartments();
+        
+        if (studentId) {
+            document.getElementById('pageTitle').textContent = 'Edit Student';
+            document.getElementById('breadcrumbActive').textContent = 'Edit Student';
+            document.getElementById('submitBtn').textContent = 'Update Student';
+            await loadStudentData();
+        } else {
+            document.getElementById('inputPassword').required = true;
+        }
+    });
+
+    async function loadDepartments() {
+        try {
+            const departments = await apiFetch('/api/departments/');
+            const select = document.getElementById('inputDepartment');
+            departments.forEach(dept => {
+                const option = document.createElement('option');
+                option.value = dept.id;
+                option.textContent = dept.name;
+                select.appendChild(option);
+            });
+        } catch (error) {
+            console.error('Failed to load departments', error);
+        }
+    }
+
+    async function loadStudentData() {
+        try {
+            const student = await apiFetch(`/api/students/${studentId}/`);
+            document.getElementById('inputUsername').value = student.user.username;
+            document.getElementById('inputFirstName').value = student.user.first_name;
+            document.getElementById('inputLastName').value = student.user.last_name;
+            document.getElementById('inputEmail').value = student.user.email;
+            
+            document.getElementById('inputAdmissionNo').value = student.roll_number;
+            document.getElementById('inputDepartment').value = student.department || '';
+            document.getElementById('inputPhone').value = student.phone || '';
+            document.getElementById('inputAddress').value = student.address || '';
+        } catch (error) {
+            alert('Failed to load student data');
+            console.error(error);
+        }
+    }
+
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const userData = {
+            username: document.getElementById('inputUsername').value,
+            first_name: document.getElementById('inputFirstName').value,
+            last_name: document.getElementById('inputLastName').value,
+            email: document.getElementById('inputEmail').value
+        };
+        const password = document.getElementById('inputPassword').value;
+        if (password) {
+            userData.password = password;
+        }
+
+        const data = {
+            user: userData,
+            roll_number: document.getElementById('inputAdmissionNo').value,
+            department: document.getElementById('inputDepartment').value,
+            phone: document.getElementById('inputPhone').value,
+            address: document.getElementById('inputAddress').value
+        };
+
+        try {
+            if (studentId) {
+                await apiFetch(`/api/students/${studentId}/`, {
+                    method: 'PUT',
+                    body: JSON.stringify(data)
+                });
+            } else {
+                await apiFetch('/api/students/', {
+                    method: 'POST',
+                    body: JSON.stringify(data)
+                });
+            }
+            window.location.href = "{% url 'student_list' %}";
+        } catch (error) {
+            alert('Failed to save student. ' + error.message);
+            console.error(error);
+        }
+    });
+</script>
 {% endblock %}
